@@ -1,6 +1,19 @@
 # wingspan-scoresheet
 
-This template should help get you started developing with Vue 3 in Vite.
+Example getting started with Vue from class
+
+## FIXES FROM CLASS
+
+In calculating the high score, I was using `Math.max` incorrectly.  
+ `Math.max` uses a list of numbers as in
+`Math.max(1,2,3)`, not an array. So, I need to "spread" the Array
+into its individual items with ...
+`Math.max(...totalForPlayers)`
+
+In comparing the player total score in `isWinner`, I needed to use the `.value` of the `getHighestScore`. Since `getHighestScore` is a Vue `computed` value,
+I need to refer to `getHighestScore.value` to get the value instead of the
+computed object that Vue created to wrap the value so that it can do
+its Vue 'magic'
 
 ## Recommended IDE Setup
 
@@ -9,15 +22,11 @@ This template should help get you started developing with Vue 3 in Vite.
 ## Recommended Browser Setup
 
 - Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
+  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
   - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
 - Firefox:
   - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
   - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
 
 ## Project Setup
 
