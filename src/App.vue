@@ -1,53 +1,19 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const players = ref([
-  {
-    name: 'Player 1',
-    birds: 0,
-    bonus: 0,
-    round: 0,
-    eggs: 0,
-    cached: 0,
-    tucked: 0,
-  },
-  {
-    name: 'Player 2',
-    birds: 0,
-    bonus: 0,
-    round: 0,
-    eggs: 0,
-    cached: 0,
-    tucked: 0,
-  },
-  {
-    name: 'Player 3',
-    birds: 0,
-    bonus: 0,
-    round: 0,
-    eggs: 0,
-    cached: 0,
-    tucked: 0,
-  },
-  {
-    name: 'Player 4',
-    birds: 0,
-    bonus: 0,
-    round: 0,
-    eggs: 0,
-    cached: 0,
-    tucked: 0,
-  },
-  {
-    name: 'Player 5',
-    birds: 0,
-    bonus: 0,
-    round: 0,
-    eggs: 0,
-    cached: 0,
-    tucked: 0,
-  },
-])
+const players = ref(
+  [1, 2, 3, 4, 5].map((n) => {
+    return {
+      name: `Player ${n}`,
+      birds: 0,
+      bonus: 0,
+      round: 0,
+      eggs: 0,
+      cached: 0,
+      tucked: 0,
+    }
+  }),
+)
 
 const getPlayerTotal = (player) => {
   return player.birds + player.bonus + player.round + player.eggs + player.cached + player.tucked
@@ -82,6 +48,17 @@ const isWinner = (player) => {
     return false
   }
 }
+
+const editingPlayer = ref(null)
+
+const startEditing = (index) => {
+  console.log(`Editing player ${index}`)
+  editingPlayer.value = index
+}
+const endEditing = () => {
+  console.log('End editing')
+  editingPlayer.value = null
+}
 </script>
 
 <template>
@@ -94,7 +71,16 @@ const isWinner = (player) => {
         class="player"
         :class="{ winner: isWinner(player) }"
       >
-        <h2>{{ player.name }}</h2>
+        <div class="player-header">
+          <input
+            v-if="editingPlayer === index"
+            @blur="endEditing"
+            @keyup.enter="endEditing"
+            class="name"
+            v-model="player.name"
+          />
+          <h2 v-else @click="startEditing(index)">{{ player.name }}</h2>
+        </div>
         <div class="points">
           <label>Birds</label> <input class="points" v-model.number="player.birds" />
         </div>
@@ -123,6 +109,9 @@ const isWinner = (player) => {
 body {
   font-family: arial, helvetica, sans-serif;
 }
+* {
+  box-sizing: border-box;
+}
 </style>
 <style scoped>
 .player {
@@ -143,7 +132,14 @@ body {
   margin-top: 1rem;
 }
 .winner {
-  background-color: lime;
+  border-color: green;
+}
+.winner::after {
+  content: '🏆';
+  width: 100%;
+  display: block;
+  text-align: center;
+  font-size: 4rem;
 }
 label {
   display: block;
@@ -154,5 +150,17 @@ input {
   font-size: 1.5rem;
   width: 5rem;
   text-align: right;
+}
+input.name {
+  text-align: left;
+  width: 100%;
+}
+.player-header {
+  margin-bottom: 1rem;
+  height: 2rem;
+}
+.player-header h2 {
+  margin: 0;
+  padding: 0;
 }
 </style>
